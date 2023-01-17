@@ -8,8 +8,8 @@ router.get("/", (req, res) => {
 });
 
 router.post("/filteredProducts", (req, res) => {
-  const { category_id } = req.body;
-  controller.getFilteredProducts(res, category_id);
+  const { category_id, page, number } = req.body;
+  controller.getFilteredProducts(res, category_id, page, number);
 });
 
 router.get("/:id", (req, res) => {
