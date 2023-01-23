@@ -29,7 +29,6 @@ router.get("/login", (req, res) => {
   else if (req.session.user) {
     delete req.session.user.isAdmin;
     res.send({ loggedIn: true, user: req.session.user });
-    console.log("Entre sin ser admin")
   } else res.send({ loggedIn: false });
 });
 
