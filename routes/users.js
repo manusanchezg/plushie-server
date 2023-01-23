@@ -24,7 +24,6 @@ router.post("/register", (req, res) => {
 router.get("/login", (req, res) => {
   if (req.session.user && req.session.user.isAdmin === "true"){
     res.send({ loggedIn: true, user: req.session.user });
-    console.log("entre")
   }
   else if (req.session.user) {
     delete req.session.user.isAdmin;
@@ -41,10 +40,8 @@ router.post("/login", (req, res, next) => {
   controller
     .login(req, username, password)
     .then((result) => {
-      console.log(result)
       res.status(200).json(result)})
     .catch((err) => {
-      console.log(err)
       res.status(404).json(err)});
 });
 
