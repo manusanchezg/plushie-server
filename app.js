@@ -33,7 +33,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: ["http://localhost:3000"],
+    origin: [process.env.URL],
     methods: ["GET", "POST", "DELETE", "PUT"],
     credentials: true,
   })

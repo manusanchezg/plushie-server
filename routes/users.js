@@ -15,12 +15,22 @@ const verifyJWT = require("../middlewares/auth");
 
 router.post("/register", (req, res) => {
   const { username, password, email } = req.body;
-  controller.register(res, username, password, email);
+  controller
+    .register(username, password, email)
+    .then((result) => res.status(200).json(result))
+    .catch((err) => res.json(err));
 });
 
 router.get("/login", (req, res) => {
-  if (req.session.user) res.send({ loggedIn: true, user: req.session.user });
-  else res.send({ loggedIn: false });
+  if (req.session.user && req.session.user.isAdmin === "true"){
+    res.send({ loggedIn: true, user: req.session.user });
+    console.log("entre")
+  }
+  else if (req.session.user) {
+    delete req.session.user.isAdmin;
+    res.send({ loggedIn: true, user: req.session.user });
+    console.log("Entre sin ser admin")
+  } else res.send({ loggedIn: false });
 });
 
 router.get("/auth", verifyJWT, (req, res) => {
@@ -29,7 +39,14 @@ router.get("/auth", verifyJWT, (req, res) => {
 
 router.post("/login", (req, res, next) => {
   const { username, password } = req.body;
-  controller.login(req, res, username, password);
+  controller
+    .login(req, username, password)
+    .then((result) => {
+      console.log(result)
+      res.status(200).json(result)})
+    .catch((err) => {
+      console.log(err)
+      res.status(404).json(err)});
 });
 
 router.post("/logout", (req, res, next) => {
@@ -38,20 +55,19 @@ router.post("/logout", (req, res, next) => {
 
 router.get("/:id", (req, res) => {
   const { password, username } = req.body;
-  controller.getUserInfo(res, username, password);
+  controller
+    .getUserInfo(username, password)
+    .then((result) => res.status(200).json(result))
+    .catch((err) => res.json(err));
 });
 
 router.put("/:username", (req, res) => {
   const { username } = req.params;
   const { name, lastName, birthdate, shippingAddress } = req.body;
-  controller.modifyUserData(
-    res,
-    username,
-    name,
-    lastName,
-    birthdate,
-    shippingAddress
-  );
+  controller
+    .modifyUserData(username, name, lastName, birthdate, shippingAddress)
+    .then((result) => res.status(200).json(result))
+    .catch((err) => res.json(err));
 });
 
 module.exports = router;

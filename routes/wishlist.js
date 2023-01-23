@@ -5,20 +5,27 @@ const controller = new WishlistController();
 
 router.post("/", (req, res) => {
   const { username, product_id } = req.body;
-  controller.addToWishlist(res, username, product_id);
+  controller
+    .addToWishlist(username, product_id)
+    .then((result) => res.status(200).json(result))
+    .catch((err) => res.json(err));
 });
 
 router.get("/:username", (req, res) => {
   const { username } = req.params;
-  controller.getWishlist(res, username);
-
+  controller
+    .getWishlist(username)
+    .then((result) => res.status(200).json(result))
+    .catch((err) => res.json(err));
 });
 
 router.delete("/:username", (req, res) => {
   const { username } = req.params;
   const { product_id } = req.query;
-  controller.deleteFromWishlist(res, username, product_id)
-
+  controller
+    .deleteFromWishlist(username, product_id)
+    .then((result) => res.status(200).json(result))
+    .catch((err) => res.json(err));
 });
 
 module.exports = router;

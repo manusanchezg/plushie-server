@@ -9,29 +9,17 @@ router.get("/", function (req, res, next) {
 });
 
 router.get("/new-in", (req, res) => {
-  controller.getNewIn(res);
+  controller
+    .getNewIn()
+    .then((result) => res.status(200).json(result))
+    .catch((err) => res.json(err));
 });
 
 router.get("/sale", (req, res) => {
-  controller.getSale(res);
+  controller
+    .getSale()
+    .then((result) => res.status(200).json(result))
+    .catch((err) => res.json(err));
 });
-
-router.post("/stock/:id", (req, res) => {
-  const { id } = req.params
-  const { color, size } = req.body
-  controller.getStock(res, id, color, size)
-})
-
-router.post("/color/:id", (req, res) => {
-  const { id } = req.params
-  const { size } = req.body
-  controller.getColor(res, id, size)
-})
-
-router.post("/size/:id", (req, res) => {
-  const { id } = req.params
-  const { color } = req.body
-  controller.getSize(res, id, color)
-})
 
 module.exports = router;

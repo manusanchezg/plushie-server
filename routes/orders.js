@@ -14,7 +14,10 @@ router.get("/status/:id", (req, res) => {
 router.post("/:orderId/product/:productId", (req, res) => {
   const { orderId, productId } = req.params;
   const { quantity, color, size } = req.body;
-  controller.setProductsOrder(res, orderId, productId, quantity, color, size);
+  controller
+    .setProductsOrder(orderId, productId, quantity, color, size)
+    .then((result) => res.status(200).json(result))
+    .catch((err) => res.json(err));
 });
 
 router.get("/:uername/:orderId", (req, res) => {
@@ -28,12 +31,18 @@ router.get("/:uername/:orderId", (req, res) => {
 router.post("/:username", (req, res) => {
   const { username } = req.params;
   const { total, orderDate, arrivedDate } = req.body;
-  controller.createNewOrder(res, username, total, orderDate, arrivedDate);
+  controller
+    .createNewOrder(username, total, orderDate, arrivedDate)
+    .then((result) => res.status(200).json(result))
+    .catch((err) => res.json(err));
 });
 
 router.get("/:username", (req, res) => {
   const { username } = req.params;
-  controller.getOrders(res, username);
+  controller
+    .getOrders(username)
+    .then((result) => res.status(200).json(result))
+    .catch((err) => res.json(err));
 });
 
 module.exports = router;
