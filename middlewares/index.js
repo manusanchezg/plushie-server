@@ -1,5 +1,5 @@
 const uuid = require("uuid")
-const session = require("express-session")
+const session = require("cookie-session")
 
 const sessionMiddleware = session({
     genpid: req => {
